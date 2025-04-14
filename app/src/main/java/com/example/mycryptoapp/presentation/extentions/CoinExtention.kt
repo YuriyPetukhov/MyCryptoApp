@@ -8,17 +8,17 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-fun Coin.getFormattedTime(): String {
-    if (lastUpdate == 0L) return ""
-    val stamp = Timestamp(lastUpdate * 1000)
-    val date = Date(stamp.time)
-    val pattern = "HH:mm:ss"
-    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
-    sdf.timeZone = TimeZone.getDefault()
-    return sdf.format(date)
-}
-
-fun Coin.getFullImageUrl(): String {
-    return BASE_IMAGE_URL + imageUrl
-
-}
+//fun Coin.getFormattedTime(): String {
+//    if (lastUpdate == 0L) return ""
+//    val stamp = Timestamp(lastUpdate * 1000)
+//    val date = Date(stamp.time)
+//    val pattern = "HH:mm:ss"
+//    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+//    sdf.timeZone = TimeZone.getDefault()
+//    return sdf.format(date)
+//}
+//
+//fun Coin.getFullImageUrl(): String {
+//    return BASE_IMAGE_URL + imageUrl
+//
+//}

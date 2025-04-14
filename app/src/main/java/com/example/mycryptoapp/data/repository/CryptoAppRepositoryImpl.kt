@@ -1,6 +1,7 @@
 package com.example.mycryptoapp.data.repository
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.mycryptoapp.data.api.ApiFactory
@@ -15,11 +16,21 @@ class CryptoAppRepositoryImpl(application: Application) : CryptoAppRepository {
     private val coinDao = AppDatabase.getInstance(application).coinDao()
     private val mapper = CoinMapper()
     override suspend fun getCoinsFromApi() {
-        val coinsNames = apiService.getTopCoinsNames(limit = 50)
-        val apiResponse = mapper.mapApiResponseToString(coinsNames)
-        val rawDataDto = apiService.getPriceList(fSyms = apiResponse)
-        val dbModelList = mapper.mapFromRawDataToDbModel(rawDataDto)
-        setCoinsToDb(dbModelList)
+        try {
+            val coinsNames = apiService.getTopCoinsNames(limit = 50)
+            val apiResponse = mapper.mapApiResponseToString(coinsNames)
+
+            val rawDataDto = apiService.getPriceList(fSyms = apiResponse)
+            val dbModelList = mapper.mapFromRawDataToDbModel(rawDataDto)
+
+            setCoinsToDb(dbModelList)
+
+        } catch (e: Exception) {
+            Log.e(
+                "CryptoAppRepositoryImpl",
+                "Ошибка: ${e.localizedMessage}, класс: ${e::class.java.simpleName}"
+            )
+        }
     }
 
 
