@@ -3,21 +3,17 @@ package com.example.mycryptoapp.presentation.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mycryptoapp.databinding.ItemCoinInfoBinding
 import com.example.mycryptoapp.domain.entity.Coin
 import com.squareup.picasso.Picasso
 
 
-class CoinInfoAdapter(private val context: Context) :
-    RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
-
-    var coinList: List<Coin> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
+class CoinInfoAdapter(private val context: Context) : ListAdapter<Coin, CoinInfoAdapter.CoinInfoViewHolder>(
+    CoinDiffCallback
+) {
     var onCoinClickListener: OnCoinClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinInfoViewHolder {
@@ -26,10 +22,9 @@ class CoinInfoAdapter(private val context: Context) :
         return CoinInfoViewHolder(binding)
     }
 
-    override fun getItemCount() = coinList.size
 
     override fun onBindViewHolder(holder: CoinInfoViewHolder, position: Int) {
-        val coin = coinList[position]
+        val coin = getItem(position)
         with(holder.binding) {
             tvPrice.text = coin.price.toString()
             tvSymbols.text = "${coin.fromSymbol}/${coin.toSymbol}"
@@ -48,5 +43,15 @@ class CoinInfoAdapter(private val context: Context) :
 
     interface OnCoinClickListener {
         fun onCoinClick(coin: Coin)
+    }
+}
+
+object CoinDiffCallback : DiffUtil.ItemCallback<Coin>() {
+    override fun areItemsTheSame(oldItem: Coin, newItem: Coin): Boolean {
+        return oldItem.fromSymbol == newItem.fromSymbol
+    }
+
+    override fun areContentsTheSame(oldItem: Coin, newItem: Coin): Boolean {
+        return oldItem == newItem
     }
 }

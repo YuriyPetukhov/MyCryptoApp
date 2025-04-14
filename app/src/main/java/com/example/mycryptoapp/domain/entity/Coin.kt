@@ -1,6 +1,6 @@
 package com.example.mycryptoapp.domain.entity
 
-class Coin(
+data class Coin(
     val fromSymbol: String,
     val toSymbol: String,
     val price: String,

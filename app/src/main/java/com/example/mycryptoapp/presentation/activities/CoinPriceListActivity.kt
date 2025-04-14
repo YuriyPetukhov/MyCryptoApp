@@ -30,8 +30,8 @@ class CoinPriceListActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(CoinViewModel::class.java)
 
-        viewModel.coinsList.observe(this){
-            adapter.coinList = it
+        viewModel.coinsList.observe(this) {
+            adapter.submitList(it)
         }
     }
 
