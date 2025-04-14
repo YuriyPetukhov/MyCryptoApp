@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mycryptoapp.data.repository.CryptoAppRepositoryImpl
 import com.example.mycryptoapp.domain.use_cases.LoadCoinsUseCase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class CoinViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,7 +25,10 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadCoins() {
         scope.launch {
-            loadCoinsUseCase.loadCoins()
+            while (isActive){
+                loadCoinsUseCase.loadCoins()
+            }
+            delay(10000)
         }
     }
 

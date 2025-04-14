@@ -33,7 +33,7 @@ class CoinInfoAdapter(private val context: Context) :
         with(holder.binding) {
             tvPrice.text = coin.price.toString()
             tvSymbols.text = "${coin.fromSymbol}/${coin.toSymbol}"
-            tvLastUpdate.text = coin.lastUpdate.toString() // форматируй при необходимости
+            tvLastUpdate.text = coin.lastUpdate
             Picasso.get().load(coin.imageUrl).into(ivLogoCoin)
             root.setOnClickListener {
                 onCoinClickListener?.onCoinClick(coin)

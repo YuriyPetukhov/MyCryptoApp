@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp") version "2.1.20-1.0.32"
+    id ("kotlin-kapt")
+
 }
 
 android {
@@ -55,16 +56,11 @@ dependencies {
     implementation (libs.rxandroid)
     implementation (libs.rxjava)
     implementation(libs.dagger.compiler)
-    ksp(libs.dagger.compiler)
-    //ViewModel
     implementation(libs.viewModel)
-//Room
     implementation(libs.room)
-// Кодогенератор Room
-    ksp(libs.room.compiler)
-// optional - Kotlin Extensions and Coroutines support for Room
     implementation(libs.room.ktx)
     implementation (libs.picasso)
-    implementation (libs.okhttp)
+    kapt("androidx.room:room-compiler:2.6.1")
+
 
 }
