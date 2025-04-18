@@ -2,7 +2,6 @@ package com.example.mycryptoapp.presentation.activities
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Применяем отступы под системные панели
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -30,31 +28,40 @@ class MainActivity : AppCompatActivity() {
 
         initViewModel()
 
+        val fragmentManager = supportFragmentManager
+
         if (savedInstanceState == null) {
             setupFragments()
         } else {
-            // Проверяем: если альбомная ориентация
             if (isLandscape()) {
-                val fragmentManager = supportFragmentManager
-                val coinsPriceListFragment = fragmentManager.findFragmentById(binding.mainContainer.id)
-                if (coinsPriceListFragment is CoinDetailFragment) {
-                    // Удаляем фрагмент из mainContainer
+                val currentFragment = fragmentManager.findFragmentById(binding.mainContainer.id)
+                // Проверяем, если в mainContainer нет CoinPriceListFragment — ставим его
+                if (currentFragment !is CoinPriceListFragment) {
+                    val priceListFragment = CoinPriceListFragment()
                     fragmentManager.beginTransaction()
-                        .remove(coinsPriceListFragment)
+                        .replace(binding.mainContainer.id, priceListFragment, "PRICE_LIST_FRAGMENT")
                         .commit()
+                }
 
+                // Проверяем, если в mainContainer был CoinDetailFragment, переносим его в detailsContainer
+                if (currentFragment is CoinDetailFragment) {
+                    val args = currentFragment.arguments
+                    fragmentManager.beginTransaction()
+                        .remove(currentFragment)
+                        .commit()
                     fragmentManager.executePendingTransactions()
-                    val detailsContainer = findViewById<View?>(R.id.details_container)
-                    if (detailsContainer != null) {
-                        // Переносим фрагмент в detailsContainer
-                        fragmentManager.beginTransaction()
-                            .replace(detailsContainer.id, coinsPriceListFragment)
-                            .commit()
-                    }
+
+                    val newDetailFragment = CoinDetailFragment()
+                    newDetailFragment.arguments = args
+                    fragmentManager.beginTransaction()
+                        .replace(binding.detailsContainer!!.id, newDetailFragment, "DETAIL_FRAGMENT")
+                        .commit()
                 }
             }
         }
     }
+
+
 
 
 
