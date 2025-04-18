@@ -61,6 +61,10 @@ dependencies {
     implementation(libs.room.ktx)
     implementation (libs.picasso)
     kapt("androidx.room:room-compiler:2.6.1")
+    implementation (libs.androidx.fragment.ktx)
+
+
+
 
 
 }

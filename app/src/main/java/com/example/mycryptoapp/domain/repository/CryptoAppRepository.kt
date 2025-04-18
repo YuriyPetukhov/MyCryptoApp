@@ -9,7 +9,7 @@ interface CryptoAppRepository {
 
     fun getCoinListFromDb(): LiveData<List<Coin>>
 
-    suspend fun getCoinFromDb(name: String): LiveData<Coin>
+    fun getCoinFromDb(name: String): LiveData<Coin>
 
     suspend fun setCoinsToDb(list: List<CoinDbModel>)
 }
