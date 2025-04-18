@@ -43,7 +43,7 @@ class CryptoAppRepositoryImpl(application: Application) : CryptoAppRepository {
 
     }
 
-    override suspend fun getCoinFromDb(name: String): LiveData<Coin> {
+    override fun getCoinFromDb(name: String): LiveData<Coin> {
         val coin = coinDao.getPriceInfoAboutCoin(name)
         return coin.map { mapper.mapFromDbModelToDomain(it) }
     }
